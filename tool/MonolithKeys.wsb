@@ -1,0 +1,21 @@
+<!--
+  Windows Sandbox configuration for trying MonolithKeys on a PC where Smart App
+  Control blocks unsigned apps. Requires Windows 11 Pro, Enterprise or
+  Education with the "Windows Sandbox" feature turned on.
+
+  1. Download MonolithKeys-Setup-1.0.0.exe to C:\Users\USER\Downloads
+     (change HostFolder below if your Downloads folder is elsewhere).
+  2. Double-click this file. The installer starts inside the sandbox.
+-->
+<Configuration>
+  <MappedFolders>
+    <MappedFolder>
+      <HostFolder>C:\Users\USER\Downloads</HostFolder>
+      <SandboxFolder>C:\Users\WDAGUtilityAccount\Downloads</SandboxFolder>
+      <ReadOnly>true</ReadOnly>
+    </MappedFolder>
+  </MappedFolders>
+  <LogonCommand>
+    <Command>C:\Users\WDAGUtilityAccount\Downloads\MonolithKeys-Setup-1.0.0.exe</Command>
+  </LogonCommand>
+</Configuration>
