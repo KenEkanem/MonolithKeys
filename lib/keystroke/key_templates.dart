@@ -213,7 +213,7 @@ CapColors capColors(KeyTemplate t, KeyColorTheme c, {required bool modifier}) {
   return CapColors(c.face, c.edge, c.text, c.face);
 }
 
-/// Text used for a stroke in presentation mode.
+/// Text of a stroke in presentation mode. keystroke_overlay.cpp joins caps the same way.
 String strokeText(Stroke s) => s.caps.map((c) => c.symbol == null ? c.label : '${c.symbol} ${c.label}').join(' + ');
 
 /// Everything the native overlay needs to draw [strokes], with sizes already
@@ -237,7 +237,6 @@ Map<String, Object?> overlayScene(List<Stroke> strokes, KeyTemplate t, KeyColorT
       for (final s in strokes)
         {
           'count': s.count,
-          'text': strokeText(s),
           'caps': [
             for (final cap in s.caps)
               {

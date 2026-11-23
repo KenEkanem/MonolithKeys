@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 import '../display/display_layout.dart';
+import '../log.dart';
 import '../keystroke/keys.dart';
 
 /// Messages the Windows layer sends to Dart.
@@ -37,10 +38,6 @@ class ToggleRequested extends NativeEvent {
   const ToggleRequested(this.feature);
 
   final Feature feature;
-}
-
-class OpenSettingsRequested extends NativeEvent {
-  const OpenSettingsRequested();
 }
 
 class ExitRequested extends NativeEvent {
@@ -105,6 +102,10 @@ class MethodChannelNativeHost implements NativeHost {
 
   Future<Object?> _onCall(MethodCall call) async {
     final args = call.arguments is Map ? call.arguments as Map : const {};
+    if (call.method == 'log') {
+      Log.info('Native: ${args['message']}');
+      return null;
+    }
     final event = switch (call.method) {
       'key' => KeyInput(
         args['vk'] as int,
@@ -114,7 +115,6 @@ class MethodChannelNativeHost implements NativeHost {
       ),
       'mouse' => MouseInput(MouseAction.values[args['action'] as int], modifiers: _modifiers(args['mods'])),
       'toggle' => ToggleRequested(Feature.values.byName(args['feature'] as String)),
-      'open' => const OpenSettingsRequested(),
       'exit' => const ExitRequested(),
       'displaysChanged' => const DisplaysChanged(),
       _ => null,

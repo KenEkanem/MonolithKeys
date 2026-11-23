@@ -67,7 +67,8 @@ void main() {
       t.native.emit(const KeyInput(0x43, down: false, modifiers: {Modifier.ctrl}));
       t.native.emit(const KeyInput(Vk.lControl, down: false, modifiers: {}));
       final last = t.native.scenes.last['strokes'] as List;
-      expect((last.single as Map)['text'], 'Ctrl + C');
+      final caps = ((last.single as Map)['caps'] as List).map((c) => (c as Map)['label']);
+      expect(caps, ['Ctrl', 'C']);
 
       final hidesBefore = t.native.hides;
       now = now.add(const Duration(milliseconds: 1000));

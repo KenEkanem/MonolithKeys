@@ -161,8 +161,6 @@ class AppController {
         _afterInput(composer.mouse(action, heldModifiers: modifiers, at: _now()));
       case ToggleRequested(:final feature):
         toggle(feature);
-      case OpenSettingsRequested():
-        native.showWindow();
       case ExitRequested():
         exit();
       case DisplaysChanged():

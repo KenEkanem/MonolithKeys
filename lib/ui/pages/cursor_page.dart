@@ -45,7 +45,7 @@ class CursorPage extends StatelessWidget {
                 SettingTile(
                   icon: FluentIcons.target_24_regular,
                   title: 'Position',
-                  subtitle: 'Pin the highlight to the middle of the screen or active window, for zoomed recordings',
+                  subtitle: 'Where the highlight is drawn',
                   trailing: OptionDropdown(
                     value: s.cursorPlacement,
                     options: _placements,

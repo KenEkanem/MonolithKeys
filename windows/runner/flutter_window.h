@@ -6,9 +6,12 @@
 
 #include <memory>
 
+#include "native_host.h"
 #include "win32_window.h"
 
-// A window that does nothing but host a Flutter view.
+// The settings window. It has no title bar (the Flutter UI draws its own
+// header), closing it only hides it, and it starts hidden until Dart asks to
+// show it.
 class FlutterWindow : public Win32Window {
  public:
   // Creates a new FlutterWindow hosting a Flutter view running |project|.
@@ -28,6 +31,9 @@ class FlutterWindow : public Win32Window {
 
   // The Flutter instance hosted by this window.
   std::unique_ptr<flutter::FlutterViewController> flutter_controller_;
+
+  // Hooks, tray, overlays and audio. Destroyed before the engine.
+  std::unique_ptr<NativeHost> native_host_;
 };
 
 #endif  // RUNNER_FLUTTER_WINDOW_H_

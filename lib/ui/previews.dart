@@ -39,14 +39,11 @@ class KeystrokePreview extends StatelessWidget {
               if (j > 0) SizedBox(width: gap),
               _cap(cap.label, cap.symbol, cap.glyph, capColors(t, colors, modifier: cap.isModifier), h),
             ],
-          if (s.count > 1)
-            Padding(
-              padding: EdgeInsets.only(left: gap),
-              child: Text(
-                '×${s.count}',
-                style: TextStyle(fontSize: t.fontSize * scale * 0.8, fontWeight: FontWeight.w700),
-              ),
-            ),
+          // The repeat count is drawn as one more cap, like the native overlay.
+          if (s.count > 1) ...[
+            SizedBox(width: gap),
+            _cap('×${s.count}', null, CapGlyph.none, capColors(t, colors, modifier: false), h),
+          ],
         ],
       ],
     );

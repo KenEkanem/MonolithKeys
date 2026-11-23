@@ -116,6 +116,7 @@ ThemeData buildTheme(Palette p, Brightness brightness) {
       thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8, elevation: 0, pressedElevation: 0),
       overlayShape: const RoundSliderOverlayShape(overlayRadius: 14),
       trackShape: const RoundedRectSliderTrackShape(),
+      tickMarkShape: SliderTickMarkShape.noTickMark,
       showValueIndicator: ShowValueIndicator.never,
     ),
     dialogTheme: DialogThemeData(

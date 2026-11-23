@@ -59,7 +59,7 @@ void main() {
       expect(scene['height'], t.height * 1.5);
       final stroke = (scene['strokes'] as List).single as Map;
       expect(stroke['count'], 2);
-      expect(stroke['text'], 'Ctrl + C');
+      expect((stroke['caps'] as List).map((c) => (c as Map)['label']), ['Ctrl', 'C']);
       expect((stroke['caps'] as List).first, containsPair('face', keyColorById('snow').face.toARGB32()));
     });
   });
