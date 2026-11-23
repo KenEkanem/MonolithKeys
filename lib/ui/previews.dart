@@ -31,9 +31,15 @@ class KeystrokePreview extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         for (final (i, s) in strokes.indexed) ...[
-          if (i > 0) SizedBox(width: gap * 2.5),
+          if (i > 0) SizedBox(width: h * 0.5),
           if (t.presentation)
-            _cap(strokeText(s), null, CapGlyph.none, capColors(t, colors, modifier: false), h)
+            _cap(
+              strokeText(s),
+              null,
+              s.caps.length == 1 ? s.caps.single.glyph : CapGlyph.none,
+              capColors(t, colors, modifier: false),
+              h,
+            )
           else
             for (final (j, cap) in s.caps.indexed) ...[
               if (j > 0) SizedBox(width: gap),

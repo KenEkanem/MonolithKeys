@@ -108,6 +108,8 @@ void KeystrokeOverlay::Show(const EncodableMap& scene) {
   st.presentation = GetBool(scene, "presentation");
   st.padding = st.height * 0.3f;
   st.gap = st.height * 0.12f;
+  // Wider than the gap between caps so separate combinations read apart.
+  const float stroke_gap = st.height * 0.5f;
 
   auto read_cap = [](const EncodableMap& m) {
     Cap c;
@@ -138,6 +140,7 @@ void KeystrokeOverlay::Show(const EncodableMap& scene) {
       if (caps.empty()) continue;
       if (st.presentation && pill) {
         Cap joined = read_cap(*pill);
+        if (caps.size() == 1) joined.glyph = caps[0].glyph;  // Keep the mouse or Windows mark.
         for (size_t i = 0; i < caps.size(); ++i) {
           if (i > 0) joined.label += L" + ";
           if (!caps[i].symbol.empty()) joined.label += caps[i].symbol + L" ";
@@ -148,7 +151,7 @@ void KeystrokeOverlay::Show(const EncodableMap& scene) {
       const int64_t count = GetInt(*stroke, "count", 1);
       if (count > 1 && pill) {
         Cap badge = read_cap(*pill);
-        badge.label = L"×" + std::to_wstring(count);
+        badge.label = L"\u00D7" + std::to_wstring(count);  // "×3"
         caps.push_back(badge);
       }
       rows.push_back(std::move(caps));
@@ -170,7 +173,7 @@ void KeystrokeOverlay::Show(const EncodableMap& scene) {
     Gdiplus::Graphics measure(&scratch);
     measure.SetTextRenderingHint(Gdiplus::TextRenderingHintAntiAliasGridFit);
     for (size_t r = 0; r < rows.size(); ++r) {
-      if (r > 0) total += st.gap * 2.5f;
+      if (r > 0) total += stroke_gap;
       for (size_t i = 0; i < rows[r].size(); ++i) {
         Cap& c = rows[r][i];
         float content = TextWidth(measure, c.label, *font);
@@ -190,7 +193,7 @@ void KeystrokeOverlay::Show(const EncodableMap& scene) {
 
   float x = aa;
   for (size_t r = 0; r < rows.size(); ++r) {
-    if (r > 0) x += st.gap * 2.5f;
+    if (r > 0) x += stroke_gap;
     for (size_t i = 0; i < rows[r].size(); ++i) {
       const Cap& c = rows[r][i];
       if (i > 0) x += st.gap;
