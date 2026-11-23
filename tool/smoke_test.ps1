@@ -45,8 +45,12 @@ Check (-not (Select-String -Path $log.FullName -Pattern 'hook could not be insta
 $second = Start-Process $exe -Wait -PassThru
 Check ($second.ExitCode -eq 0) 'a second launch exits cleanly'
 Check ((Running).Count -eq 1) 'only one instance runs'
+$before = (Get-Process -Id $app.Id).CPU
+Start-Sleep -Seconds 10
 $process = Get-Process -Id $app.Id
-Write-Host ("info working set {0:N1} MB, CPU {1:N2} s after 10 s idle" -f ($process.WorkingSet64 / 1MB), $process.CPU)
+$idleCpu = $process.CPU - $before
+Write-Host ("info working set {0:N1} MB; CPU used while idle for 10 s: {1:N2} s" -f ($process.WorkingSet64 / 1MB), $idleCpu)
+Check ($idleCpu -lt 0.5) 'near-zero CPU while idle'
 
 # Upgrade over the running app; user settings must survive
 New-Item -ItemType Directory -Force $settingsDir | Out-Null
@@ -62,7 +66,8 @@ Start-Sleep -Seconds 5
 Set-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run' -Name MonolithKeys -Value "`"$exe`" --background"
 # unins000.exe relaunches itself from a temporary copy, so wait for the result.
 Start-Process (Join-Path $appDir 'unins000.exe') -ArgumentList @('/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART')
-for ($i = 0; $i -lt 60 -and ((Test-Path $exe) -or (Test-Path $uninstallKey)); $i++) { Start-Sleep -Seconds 1 }
+Start-Sleep -Seconds 2
+for ($i = 0; $i -lt 60 -and (Get-Process -Name '_iu*' -ErrorAction SilentlyContinue); $i++) { Start-Sleep -Seconds 1 }
 Check (-not (Test-Path $exe)) 'program files removed'
 Check ((Running).Count -eq 0) 'no MonolithKeys process left running'
 Check (-not (Test-Path $uninstallKey)) 'removed from Installed apps'
