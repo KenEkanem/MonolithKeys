@@ -25,8 +25,8 @@ public static class Input {
   }
   // Absolute move on the primary display, 0..65535 in each axis.
   public static void MoveTo(int x, int y) { mouse_event(0x8001, x, y, 0, UIntPtr.Zero); }
-  public static void ButtonDown() { mouse_event(0x0008, 0, 0, 0, UIntPtr.Zero); }
-  public static void ButtonUp() { mouse_event(0x0010, 0, 0, 0, UIntPtr.Zero); }
+  public static void ButtonDown() { mouse_event(0x0002, 0, 0, 0, UIntPtr.Zero); }
+  public static void ButtonUp() { mouse_event(0x0004, 0, 0, 0, UIntPtr.Zero); }
 }
 '@
 [Input]::Dpi()
