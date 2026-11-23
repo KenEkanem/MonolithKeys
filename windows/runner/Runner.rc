@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "app.monolithkeys" "\0"
-            VALUE "FileDescription", "monolithkeys" "\0"
+            VALUE "CompanyName", "MonolithKeys" "\0"
+            VALUE "FileDescription", "MonolithKeys keystroke and cursor visualizer" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "monolithkeys" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 app.monolithkeys. All rights reserved." "\0"
-            VALUE "OriginalFilename", "monolithkeys.exe" "\0"
-            VALUE "ProductName", "monolithkeys" "\0"
+            VALUE "InternalName", "MonolithKeys" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 MonolithKeys. All rights reserved." "\0"
+            VALUE "OriginalFilename", "MonolithKeys.exe" "\0"
+            VALUE "ProductName", "MonolithKeys" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
