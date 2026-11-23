@@ -1,0 +1,70 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: 3.50.1
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Install Inno Setup
+        run: if (-not (Test-Path "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe")) { choco install innosetup -y --no-progress }
+
+      - run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Unit and widget tests
+        run: flutter test
+
+      - name: Windows integration tests
+        run: flutter test integration_test -d windows
+
+      - name: Release build and installer
+        run: powershell -ExecutionPolicy Bypass -File tool\build_release.ps1
+
+      - name: Installed-app smoke test
+        run: |
+          $installer = Get-ChildItem build\installer\MonolithKeys-Setup-*.exe | Select-Object -First 1
+          powershell -ExecutionPolicy Bypass -File tool\smoke_test.ps1 -Installer $installer.FullName
+
+      - name: Collect logs
+        if: always()
+        run: |
+          New-Item -ItemType Directory -Force artifacts | Out-Null
+          if (Test-Path "$env:LOCALAPPDATA\MonolithKeys\logs") { Copy-Item "$env:LOCALAPPDATA\MonolithKeys\logs\*" artifacts -ErrorAction SilentlyContinue }
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MonolithKeys-installer
+          path: build/installer/*.exe
+          if-no-files-found: error
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MonolithKeys-portable
+          path: build/windows/x64/runner/Release/
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: logs
+          path: artifacts/
+          if-no-files-found: ignore
