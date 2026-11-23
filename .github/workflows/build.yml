@@ -45,6 +45,9 @@ jobs:
           $installer = Get-ChildItem build\installer\MonolithKeys-Setup-*.exe | Select-Object -First 1
           powershell -ExecutionPolicy Bypass -File tool\smoke_test.ps1 -Installer $installer.FullName
 
+      - name: Capture overlays on the runner desktop
+        run: powershell -ExecutionPolicy Bypass -File tool\capture_overlay.ps1 -OutDir artifacts\overlay
+
       - name: Collect logs
         if: always()
         run: |
@@ -65,6 +68,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: logs
+          name: logs-and-overlay-captures
           path: artifacts/
           if-no-files-found: ignore
