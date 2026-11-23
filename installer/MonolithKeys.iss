@@ -73,10 +73,11 @@ const
 
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 begin
-  if CurUninstallStep = usPostUninstall then
-  begin
+  if CurUninstallStep = usUninstall then
     // The app adds this entry itself when "Start with Windows" is on.
     RegDeleteValue(HKEY_CURRENT_USER, RunKey, '{#AppName}');
+  if CurUninstallStep = usPostUninstall then
+  begin
     if not UninstallSilent and
        (MsgBox('Also remove your MonolithKeys settings and logs?', mbConfirmation, MB_YESNO or MB_DEFBUTTON2) = IDYES) then
     begin
