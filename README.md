@@ -13,7 +13,7 @@ MonolithKeys shows the keys you press and highlights your mouse pointer, for scr
 2. Run it. By default it installs for your account only and needs no administrator rights. Choose "Install for all users" if everyone on the PC should have it.
 3. MonolithKeys opens when setup finishes. Afterwards, start it from the Start menu.
 
-The installer is not code-signed yet, so Windows SmartScreen may show "Windows protected your PC". Choose **More info**, then **Run anyway**.
+The installer is not code-signed yet. On Windows 11 PCs with Smart App Control turned on, Windows blocks it and offers no way to run it; use Windows Sandbox or a virtual machine until a signed release is available. Elsewhere, SmartScreen may show "Windows protected your PC": choose **More info**, then **Run anyway**.
 
 To upgrade, run a newer installer. It closes MonolithKeys first and keeps your settings.
 

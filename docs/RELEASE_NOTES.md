@@ -26,7 +26,7 @@ First release.
 - Per-user installer with optional all-users install, Start menu and optional desktop shortcuts, and clean uninstall.
 
 **Known limitations**
-- The installer and app are not code-signed, so SmartScreen warns on first run.
+- The installer and app are not code-signed. Smart App Control blocks them, and SmartScreen warns on first run where Smart App Control is off.
 - Online license activation is not available yet. All features work without a license.
 - Overlays cannot draw over exclusive full-screen games or over secure screens such as UAC prompts and the lock screen.
 - Keystrokes typed into elevated (administrator) apps are not seen unless MonolithKeys also runs as administrator. This is a Windows restriction on input hooks.
